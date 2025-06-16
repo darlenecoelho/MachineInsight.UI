@@ -1,0 +1,30 @@
+<div class="dashboard-content">
+  <h1>Dashboard de Máquinas</h1>
+
+ <!-- Lista de máquinas -->
+  <mat-list class="machine-list">
+    <mat-list-item *ngFor="let m of machines">
+      <mat-icon matListIcon>build</mat-icon>
+      <div matLine>{{ m.name }}</div>
+      <div matLine>
+        {{ m.latitude.toFixed(5) }}, {{ m.longitude.toFixed(5) }}
+        — Status: {{ MachineStatus[m.status] }}
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+   <div class="legend-list">
+    <div *ngFor="let s of statusList" class="legend-item">
+      <span
+        class="legend-dot"
+        [ngStyle]="{ 'background-color': statusColor(s.value) }"
+      ></span>
+      <span class="legend-label">{{ s.label }}</span>
+    </div>
+  </div>
+
+  <!-- Mapa Leaflet -->
+  <div class="map-card">
+    <div id="map" class="map-container"></div>
+  </div>
+</div>
