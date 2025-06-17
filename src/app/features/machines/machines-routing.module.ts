@@ -1,14 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { FormComponent }      from './form/form.component';
-import { DetailsComponent }   from './details/details.component';
 
 const routes: Routes = [
-  { path: '',      component: DashboardComponent },
-  { path: 'new',   component: FormComponent },
-  { path: 'edit/:id', component: FormComponent },
-  { path: ':id',   component: DetailsComponent }
+  {
+    path: '',
+    loadComponent: () =>
+      import('./dashboard/dashboard.component')
+        .then(m => m.DashboardComponent)
+  },
+
+  {
+    path: 'manage',
+    loadComponent: () =>
+      import('./manage/manage-machines.component')
+        .then(m => m.ManageMachinesComponent)
+  },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./details/details.component')
+        .then(m => m.DetailsComponent)
+  }
 ];
 
 @NgModule({

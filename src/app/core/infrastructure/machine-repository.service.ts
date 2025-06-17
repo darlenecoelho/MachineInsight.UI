@@ -23,7 +23,7 @@ private socket$: WebSocketSubject<RawMachineDto>;
         j.id,
         j.name,
         { latitude: j.latitude, longitude: j.longitude },
-        j.status   // se quiser converter para enum, faça aqui
+        j.status  
       )));
   }
 

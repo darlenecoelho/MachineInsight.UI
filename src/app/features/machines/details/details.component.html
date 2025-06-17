@@ -1,1 +1,16 @@
-<p>details works!</p>
+<mat-card *ngIf="machine" class="details-card">
+  <mat-card-title>{{ machine.name }}</mat-card-title>
+
+  <mat-card-content>
+    <p><strong>Localização:</strong> {{ machine.latitude }}, {{ machine.longitude }}</p>
+    <p><strong>Status:</strong> {{ statusEnum[machine.status] }}</p>
+    <p><strong>RPM:</strong> {{ machine.rpm }}</p>
+    <p><strong>Criado em:</strong> {{ machine.createdAt | date:'short' }}</p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="goBack()">Voltar</button>
+    <button mat-button color="primary" (click)="goEdit()">Editar</button>
+    <button mat-button color="warn" (click)="delete()">Excluir</button>
+  </mat-card-actions>
+</mat-card>

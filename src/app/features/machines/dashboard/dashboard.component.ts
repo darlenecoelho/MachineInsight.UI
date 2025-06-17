@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule }                        from '@angular/common';
-import { HttpClientModule }                    from '@angular/common/http';
 import { MatToolbarModule }                    from '@angular/material/toolbar';
 import { MatButtonModule }                     from '@angular/material/button';
 import { MatListModule }                       from '@angular/material/list';
@@ -13,18 +12,22 @@ import { RawMachineDto }                       from '../../../core/infrastructur
 import { TelemetryEvent }                      from '../../../core/infrastructure/dtos/telemetry-event';
 import { MachineStatus }                       from '../../../core/domain/enums/machine-status';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule     } from '@angular/material/input';
+
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
   imports: [
     CommonModule,
-    HttpClientModule,
     MatToolbarModule,
     MatButtonModule,
     MatListModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    MatFormFieldModule,  
+    MatInputModule   
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
@@ -35,6 +38,9 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   private markers = new Map<string, L.CircleMarker>();
   private telemetrySub!: Subscription;
   public MachineStatus = MachineStatus;
+  public searchResults: RawMachineDto[] = [];
+  public highlightedId: string | null = null;
+
 
    public statusList = [
     { value: MachineStatus.Operating,   label: 'Operating'   },
@@ -104,7 +110,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   private renderMarker(m: RawMachineDto): void {
     const coords: L.LatLngExpression = [m.latitude, m.longitude];
     const color = this.colorService.getColor(m.status);
-    const popup  = `<b>${m.name}</b><br>Status: ${m.status}<br>RPM: ${m.rpm}`;
+    const statusName = MachineStatus[m.status];
+    const popup  = `<b>${m.name}</b><br>Status: ${statusName}<br>RPM: ${m.rpm}`;
 
     if (this.markers.has(m.id)) {
       const marker = this.markers.get(m.id)!;
@@ -129,4 +136,40 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   public statusColor(status: MachineStatus): string {
     return this.colorService.getColor(status);
   }
+
+  public onSearch(term: string): void {
+  const lower = term.trim().toLowerCase();
+  if (!lower) {
+    this.searchResults = [];
+    this.highlightedId = null;
+    return;
+  }
+
+  this.searchResults = this.machines
+    .filter(m => m.name.toLowerCase().includes(lower));
+}
+
+public selectMachine(id: string): void {
+  this.highlightedId = id;
+
+  const machine = this.machines.find(m => m.id === id);
+  if (!machine) return;
+
+  this.map.setView([machine.latitude, machine.longitude], this.map.getZoom());
+
+  this.markers.forEach((marker, key) => {
+    const m = this.machines.find(x => x.id === key)!;
+    const baseColor = this.colorService.getColor(m.status);
+    marker.setStyle({
+      radius: 8,
+      fillColor: baseColor,
+      color: key === id ? 'limegreen' : '#333',
+      weight: key === id ? 3 : 1,
+      fillOpacity: 0.8
+    });
+  });
+
+  this.markers.get(id)?.openPopup();
+  this.searchResults = []; 
+}
 }

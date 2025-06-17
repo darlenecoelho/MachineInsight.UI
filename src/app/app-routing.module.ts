@@ -1,12 +1,9 @@
-// src/app/app-routing.module.ts
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  // raiz → redireciona para /dashboard
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-  // Dashboard em /dashboard
   {
     path: 'dashboard',
     loadComponent: () =>
@@ -14,11 +11,25 @@ const routes: Routes = [
         .then(m => m.DashboardComponent)
   },
 
-  // Mantém as rotas antigas de CRUD apontando pra Dashboard (temporário)
-  { path: 'machines', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'machines/new', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'machines/edit/:id', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'machines/:id', redirectTo: 'dashboard', pathMatch: 'full' },
+  {
+    path: 'manage',
+    loadComponent: () =>
+      import('./features/machines/manage/manage-machines.component')
+        .then(m => m.ManageMachinesComponent)
+  },
+
+  {
+    path: 'machines/new',
+    loadComponent: () =>
+      import('./features/machines/create/create-machine-dialog.component')
+        .then(m => m.CreateMachineDialogComponent)
+  },
+  {
+    path: 'machines/:id',
+    loadComponent: () =>
+      import('./features/machines/details/details.component')
+        .then(m => m.DetailsComponent)
+  },
 
   { path: '**', redirectTo: 'dashboard' }
 ];

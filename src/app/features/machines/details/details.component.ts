@@ -1,34 +1,56 @@
-// src/app/features/machines/details/details.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CommonModule }      from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { MachineRepositoryService } from '../../../core/infrastructure/machine-repository.service';
+import { CommonModule }                       from '@angular/common';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { MatCardModule }                      from '@angular/material/card';
+import { MatButtonModule }                    from '@angular/material/button';
+import { MachineCrudService }                 from '../../../core/infrastructure/services/machine-manage.service';
+import { RawMachineDto }                      from '../../../core/infrastructure/dtos/raw-machine.dto';
+import { MachineStatus }                      from '../../../core/domain/enums/machine-status';
 
 @Component({
   standalone: true,
   selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
   imports: [
     CommonModule,
-    RouterModule
-  ]
+    RouterModule,
+    MatCardModule,
+    MatButtonModule
+  ],
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
+  machine?: RawMachineDto;
+  statusEnum = MachineStatus;
+
   constructor(
+    private crud: MachineCrudService,
     private route: ActivatedRoute,
-    private repo: MachineRepositoryService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.repo.getById(id)
-        .then(machine => {
-          // aqui você pode armazenar em uma propriedade e exibir no template
-          console.log('Máquina carregada:', machine);
-        })
-        .catch(err => console.error('Erro ao carregar detalhes:', err));
+      this.crud.getById(id).subscribe(m => this.machine = m);
+    }
+  }
+
+  goEdit(): void {
+    if (this.machine) {
+      this.router.navigate(['/machines/edit', this.machine.id]);
+    }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/manage']);
+  }
+
+  delete(): void {
+    if (!this.machine) return;
+    if (confirm('Confirma exclusão?')) {
+      this.crud.delete(this.machine.id)
+        .subscribe(() => this.router.navigate(['/manage']));
     }
   }
 }

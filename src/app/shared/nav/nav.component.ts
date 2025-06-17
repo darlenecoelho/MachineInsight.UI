@@ -16,7 +16,7 @@ import { MatButtonModule }  from '@angular/material/button';
       <button mat-button routerLink="/dashboard" routerLinkActive="active">
         Dashboard
       </button>
-      <button mat-button routerLink="/machines/manage" routerLinkActive="active">
+      <button mat-button routerLink="/manage" routerLinkActive="active">
         Gerenciar Máquinas
       </button>
     </mat-toolbar>
@@ -24,10 +24,10 @@ import { MatButtonModule }  from '@angular/material/button';
   styles: [`
     .toolbar {
       display: flex;
-      justify-content: center;    /* centraliza os botões */
+      justify-content: center;    
     }
     .active {
-      font-weight: bold;          /* destaque no item ativo */
+      font-weight: bold;          
       text-decoration: underline;
     }
   `]

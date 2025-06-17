@@ -1,7 +1,4 @@
 <div class="dashboard-content">
-  <h1>Dashboard de Máquinas</h1>
-
- <!-- Lista de máquinas -->
   <mat-list class="machine-list">
     <mat-list-item *ngFor="let m of machines">
       <mat-icon matListIcon>build</mat-icon>
@@ -22,8 +19,24 @@
       <span class="legend-label">{{ s.label }}</span>
     </div>
   </div>
+ <div class="map-search">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Procurar por máquina</mat-label>
+      <input matInput #searchInput (input)="onSearch(searchInput.value)" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
-  <!-- Mapa Leaflet -->
+    <div *ngIf="searchResults.length" class="search-results">
+      <div
+        *ngFor="let item of searchResults"
+        class="search-item"
+        [class.active]="item.id === highlightedId"
+        (click)="selectMachine(item.id)"
+      >
+        {{ item.name }}
+      </div>
+    </div>
+  </div>
   <div class="map-card">
     <div id="map" class="map-container"></div>
   </div>
