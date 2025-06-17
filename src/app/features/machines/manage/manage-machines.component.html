@@ -8,6 +8,12 @@
   </mat-card-header>
 
   <mat-card-content>
+    <mat-form-field appearance="outline" class="field">
+  <mat-label>Filtrar por Status</mat-label>
+  <mat-select (selectionChange)="applyStatusFilter($event.value)">
+    <mat-option *ngFor="let s of statusList" [value]="s.value">{{ s.label }}</mat-option>
+  </mat-select>
+</mat-form-field>
     <table mat-table [dataSource]="dataSource" matSort class="full-width">
 
       <ng-container matColumnDef="name">

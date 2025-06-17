@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule }                from '@angular/common';
 import { MatButtonModule }             from '@angular/material/button';
 import { MatDialog, MatDialogModule }  from '@angular/material/dialog';
+import { MatFormFieldModule }       from '@angular/material/form-field';    // ←
+import { MatSelectModule }          from '@angular/material/select';
 import { MatSortModule, MatSort }      from '@angular/material/sort';
 import { MachineTelemetryService }     from '../../../core/infrastructure/services/machine-telemetry.service';
 import { MachineDto }               from '../../../core/infrastructure/dtos/machine.dto';
@@ -11,7 +13,7 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCardModule }           from '@angular/material/card';
 import { Router }                      from '@angular/router';
 import { EditMachineDialogComponent } from '../edit/edit-machine-dialog.component';
-
+import { MachineStatus }                       from '../../../core/domain/enums/machine-status';
 
 @Component({
   standalone: true,
@@ -24,6 +26,8 @@ import { EditMachineDialogComponent } from '../edit/edit-machine-dialog.componen
     MatSortModule,
     MatIconModule,
     MatCardModule,
+    MatFormFieldModule,   
+    MatSelectModule, 
     EditMachineDialogComponent     
   ],
   templateUrl: './manage-machines.component.html',
@@ -34,7 +38,17 @@ export class ManageMachinesComponent implements OnInit, AfterViewInit {
 
   displayedColumns = ['name','latitude','longitude','status','createdAt','actions'];
   dataSource = new MatTableDataSource<MachineDto>();  
+  public MachineStatus = MachineStatus;
+  
 
+  public statusList = [
+      { value: null, label: 'Todos' },
+      { value: MachineStatus.Operating,   label: 'Operating'   },
+      { value: MachineStatus.Maintenance, label: 'Maintenance' },
+      { value: MachineStatus.Shutdown,    label: 'Shutdown'    },
+      { value: MachineStatus.Idle,        label: 'Idle'        },
+      { value: MachineStatus.Fault,       label: 'Fault'       },
+    ];
   constructor(
     private telemetryService: MachineTelemetryService,
     private dialog: MatDialog,
@@ -42,6 +56,10 @@ export class ManageMachinesComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
+    this.dataSource.filterPredicate = (data, filter) => {
+      if (filter === '' || filter == null) return true;
+      return data.status === Number(filter);
+    };
     this.load();
   }
 
@@ -53,6 +71,10 @@ export class ManageMachinesComponent implements OnInit, AfterViewInit {
     this.telemetryService
       .listMachines()
       .subscribe(list => this.dataSource.data = list);
+  }
+
+  applyStatusFilter(value: string|null) {
+    this.dataSource.filter = value ?? '';
   }
 
   openCreateDialog() {
