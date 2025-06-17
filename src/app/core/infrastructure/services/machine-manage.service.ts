@@ -2,7 +2,7 @@ import { Injectable }      from '@angular/core';
 import { HttpClient }      from '@angular/common/http';
 import { Observable }      from 'rxjs';
 import { environment }     from '../../../../environments/environment';
-import { RawMachineDto }   from '../dtos/raw-machine.dto';
+import { MachineDto }   from '../dtos/machine.dto';
 import { CreateMachineDto, UpdateMachineDto } from '../dtos';
 
 @Injectable({ providedIn: 'root' })
@@ -11,16 +11,16 @@ export class MachineCrudService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<RawMachineDto[]> {
-    return this.http.get<RawMachineDto[]>(this.base);
+  list(): Observable<MachineDto[]> {
+    return this.http.get<MachineDto[]>(this.base);
   }
 
-  getById(id: string): Observable<RawMachineDto> {
-    return this.http.get<RawMachineDto>(`${this.base}/${id}`);
+  getById(id: string): Observable<MachineDto> {
+    return this.http.get<MachineDto>(`${this.base}/${id}`);
   }
 
-  create(dto: CreateMachineDto): Observable<RawMachineDto> {
-    return this.http.post<RawMachineDto>(this.base, dto);
+  create(dto: CreateMachineDto): Observable<MachineDto> {
+    return this.http.post<MachineDto>(this.base, dto);
   }
 
   update(id: string, dto: UpdateMachineDto): Observable<void> {
@@ -31,7 +31,7 @@ export class MachineCrudService {
     return this.http.delete<void>(`${this.base}/${id}`);
   }
 
-  listByStatus(status: number): Observable<RawMachineDto[]> {
-    return this.http.get<RawMachineDto[]>(`${this.base}/status/${status}`);
+  listByStatus(status: number): Observable<MachineDto[]> {
+    return this.http.get<MachineDto[]>(`${this.base}/status/${status}`);
   }
 }

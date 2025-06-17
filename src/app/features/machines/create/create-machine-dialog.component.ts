@@ -6,6 +6,7 @@ import { MatButtonModule }               from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MachineCrudService }            from '../../../core/infrastructure/services/machine-manage.service';
 import { CreateMachineDto }              from '../../../core/infrastructure/dtos/create-machine.dto';
+import { CommonModule }          from '@angular/common';
 
 @Component({
   standalone: true,
@@ -15,7 +16,8 @@ import { CreateMachineDto }              from '../../../core/infrastructure/dtos
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    CommonModule
   ],
   templateUrl: './create-machine-dialog.component.html',
   styleUrls: ['./create-machine-dialog.component.scss']

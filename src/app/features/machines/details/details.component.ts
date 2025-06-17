@@ -4,7 +4,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule }                      from '@angular/material/card';
 import { MatButtonModule }                    from '@angular/material/button';
 import { MachineCrudService }                 from '../../../core/infrastructure/services/machine-manage.service';
-import { RawMachineDto }                      from '../../../core/infrastructure/dtos/raw-machine.dto';
+import { MachineDto }                      from '../../../core/infrastructure/dtos/machine.dto';
 import { MachineStatus }                      from '../../../core/domain/enums/machine-status';
 
 @Component({
@@ -20,7 +20,7 @@ import { MachineStatus }                      from '../../../core/domain/enums/m
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-  machine?: RawMachineDto;
+  machine?: MachineDto;
   statusEnum = MachineStatus;
 
   constructor(

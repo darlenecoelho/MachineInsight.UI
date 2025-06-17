@@ -1,5 +1,4 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { MachineRepositoryService } from './infrastructure/machine-repository.service';
 
 @NgModule({
 })

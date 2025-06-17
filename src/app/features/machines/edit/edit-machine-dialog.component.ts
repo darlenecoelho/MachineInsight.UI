@@ -1,13 +1,15 @@
 import { Component, Inject }                   from '@angular/core';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, 
+ReactiveFormsModule} from '@angular/forms';
 import { MatFormFieldModule }                  from '@angular/material/form-field';
 import { MatInputModule }                      from '@angular/material/input';
 import { MatButtonModule }                     from '@angular/material/button';
-import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef, 
+MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MachineCrudService }                  from '../../../core/infrastructure/services/machine-manage.service';
-import { RawMachineDto }                       from '../../../core/infrastructure/dtos/raw-machine.dto';
+import { MachineDto }                       from '../../../core/infrastructure/dtos/machine.dto';
 import { UpdateMachineDto }                    from '../../../core/infrastructure/dtos/update-machine.dto';
-
+import { CommonModule }        from '@angular/common';
 
 @Component({
   standalone: true,
@@ -17,7 +19,8 @@ import { UpdateMachineDto }                    from '../../../core/infrastructur
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    CommonModule
   ],
   templateUrl: './edit-machine-dialog.component.html', 
   styleUrls: ['./edit-machine-dialog.component.scss']
@@ -39,7 +42,7 @@ export class EditMachineDialogComponent {
       longitude: [0, [Validators.required, Validators.min(-180), Validators.max(180)]]
     });
 
-    this.crud.getById(this.data.id).subscribe((dto: RawMachineDto) => {
+    this.crud.getById(this.data.id).subscribe((dto: MachineDto) => {
       this.form.patchValue({
         name:      dto.name,
         latitude:  dto.latitude,

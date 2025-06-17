@@ -6,15 +6,15 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, firstValueFrom  } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
-import { RawMachineDto } from './dtos/raw-machine.dto';
+import { MachineDto } from './dtos/machine.dto';
 
 @Injectable({ providedIn: 'root' })
 export class MachineRepositoryService implements IMachineRepository {
   private readonly apiUrl = `${environment.apiUrl}/machines`;
-private socket$: WebSocketSubject<RawMachineDto>;
+private socket$: WebSocketSubject<MachineDto>;
 
   constructor(private http: HttpClient) {
-  this.socket$ = webSocket<RawMachineDto>(environment.hubUrl || '');
+  this.socket$ = webSocket<MachineDto>(environment.hubUrl || '');
   }
 
   listAll(): Promise<Machine[]> {

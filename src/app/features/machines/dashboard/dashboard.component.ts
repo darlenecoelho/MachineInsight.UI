@@ -8,7 +8,7 @@ import * as L                                  from 'leaflet';
 import { Subscription }                        from 'rxjs';
 import { MachineTelemetryService }             from '../../../core/infrastructure/services/machine-telemetry.service';
 import { StatusColorService }                  from '../../../core/domain/services/status-color.service';
-import { RawMachineDto }                       from '../../../core/infrastructure/dtos/raw-machine.dto';
+import { MachineDto }                       from '../../../core/infrastructure/dtos/machine.dto';
 import { TelemetryEvent }                      from '../../../core/infrastructure/dtos/telemetry-event';
 import { MachineStatus }                       from '../../../core/domain/enums/machine-status';
 import { MatChipsModule } from '@angular/material/chips';
@@ -33,12 +33,12 @@ import { MatInputModule     } from '@angular/material/input';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements AfterViewInit, OnDestroy {
-  public machines: RawMachineDto[] = [];
+  public machines: MachineDto[] = [];
   private map!: L.Map;
   private markers = new Map<string, L.CircleMarker>();
   private telemetrySub!: Subscription;
   public MachineStatus = MachineStatus;
-  public searchResults: RawMachineDto[] = [];
+  public searchResults: MachineDto[] = [];
   public highlightedId: string | null = null;
 
 
@@ -96,7 +96,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     const idx = this.machines.findIndex(m => m.id === evt.machineId);
     if (idx === -1) return;
 
-    const updated: RawMachineDto = {
+    const updated: MachineDto = {
       ...this.machines[idx],
       status: evt.status,
       rpm: evt.rpm,
@@ -107,7 +107,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     this.renderMarker(updated);
   }
 
-  private renderMarker(m: RawMachineDto): void {
+  private renderMarker(m: MachineDto): void {
     const coords: L.LatLngExpression = [m.latitude, m.longitude];
     const color = this.colorService.getColor(m.status);
     const statusName = MachineStatus[m.status];

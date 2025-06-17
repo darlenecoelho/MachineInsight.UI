@@ -1,4 +1,4 @@
-export interface RawMachineDto {
+export interface MachineDto {
   id: string;
   name: string;
   latitude: number;

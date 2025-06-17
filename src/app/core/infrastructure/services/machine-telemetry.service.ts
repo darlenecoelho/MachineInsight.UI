@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { RawMachineDto } from '../dtos/raw-machine.dto';
+import { MachineDto } from '../dtos/machine.dto';
 import { TelemetryEvent } from '../dtos/telemetry-event';
 
 @Injectable({ providedIn: 'root' })
@@ -16,8 +16,8 @@ export class MachineTelemetryService {
 
   constructor(private http: HttpClient) {}
 
-  listMachines(): Observable<RawMachineDto[]> {
-    return this.http.get<RawMachineDto[]>(this.apiUrl);
+  listMachines(): Observable<MachineDto[]> {
+    return this.http.get<MachineDto[]>(this.apiUrl);
   }
 
   telemetry$(): Observable<TelemetryEvent> {

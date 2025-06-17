@@ -4,7 +4,7 @@ import { MatButtonModule }             from '@angular/material/button';
 import { MatDialog, MatDialogModule }  from '@angular/material/dialog';
 import { MatSortModule, MatSort }      from '@angular/material/sort';
 import { MachineTelemetryService }     from '../../../core/infrastructure/services/machine-telemetry.service';
-import { RawMachineDto }               from '../../../core/infrastructure/dtos/raw-machine.dto';
+import { MachineDto }               from '../../../core/infrastructure/dtos/machine.dto';
 import { CreateMachineDialogComponent } from '../create/create-machine-dialog.component';
 import { MatIconModule }               from '@angular/material/icon';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -33,7 +33,7 @@ export class ManageMachinesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns = ['name','latitude','longitude','status','createdAt','actions'];
-  dataSource = new MatTableDataSource<RawMachineDto>();  
+  dataSource = new MatTableDataSource<MachineDto>();  
 
   constructor(
     private telemetryService: MachineTelemetryService,
@@ -64,7 +64,7 @@ export class ManageMachinesComponent implements OnInit, AfterViewInit {
     });
   }
 
-   openEditDialog(machine: RawMachineDto) {
+   openEditDialog(machine: MachineDto) {
   const ref = this.dialog.open(
     EditMachineDialogComponent,
     {
